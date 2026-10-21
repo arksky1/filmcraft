@@ -1,27 +1,32 @@
 # Korean translation validation
 
-Catalog additions against `70f0fc7a75f2681bc18302e67eaf0c9d41c68873`: **4** entries. Existing Korean entries are unchanged. The provided translation data was checked against the current Rust sources; candidate keys with no matching production literal were excluded. No new translations were generated.
+Catalog additions against `70f0fc7a75f2681bc18302e67eaf0c9d41c68873`: **4** entries. Every existing Korean entry is preserved. Only translations supplied by the root task were used.
+
+## Independent coverage
+
+- Restored 0 root-supplied keys previously omitted because an unmerged third-party PR also proposed them. These keys are included in this branch; no unmerged PR is required to supply them.
+- The third-party PR patches were used to identify overlap, not as translation sources.
+- The correction ZIP contains 153 direct-lookup mappings. All 153 keys and root-provided values were verified against their current source locations.
+- Correction ZIP SHA256: `a97cb9c22e110d177ca7a5f0a70db976aee34056ae030fca2c3d9a0e884f755f`.
 
 ## Static checks
 
-- Catalog structure, unique keys, original key preservation, named placeholders, trailing ellipses, and explicit shortcut tokens checked with Python 3.14.5.
-- Existing catalog entries were compared with the baseline commit.
-- New entries have source-location evidence in the local audit; dynamic labels use the existing translation paths.
+- Catalog syntax/table shape, unique keys, source keys, named placeholders, trailing ellipses, explicit shortcut tokens, and preservation of all existing Korean entries passed.
+- Tokenized source audit: 1353 unique direct translation lookup keys; 0 word-bearing keys still missing from this catalog.
+- Recorded 213 dynamic lookup sites for source inspection. Variable document text, file names, and machine identifiers retain their existing behavior.
+- Finite dynamic checks passed: PhotoCraft menu catalog (632 keys), VectorCraft render-site table (21 keys), FigCraft English UI (1,747 keys), required command reference (574 keys), and menu reference (31 keys). All accepted root-supplied context/id/plural keys resolve.
 - `git diff --check` passed.
 
 ## Checks not run
 
-Cargo, rustc, and rustfmt are unavailable in this environment. Rust installation is awaiting user approval; no tools were installed. The following checks have **not** been run:
+Cargo, rustc, and rustfmt are unavailable. Rust installation remains awaiting user approval; no tools were installed. The following were not run:
 
 - `cargo test -p filmcraft-ui-egui`
 - `cargo fmt --all --check`
 - `cargo clippy -p filmcraft-ui-egui --all-targets -- -D warnings`
-- `cargo xtask layers`, `cargo xtask assets`, `cargo xtask wasm`, and the full `cargo xtask ci` gate
-- Native and web UI rendering, layout, runtime language switching, and font/glyph coverage
+- `cargo xtask layers`, `cargo xtask assets`, `cargo xtask wasm`, and `cargo xtask ci`
+- Native/web UI rendering, layout, runtime switching, and font/glyph coverage
 
-## Candidate filtering
+Static checks do not replace runtime verification or prove coverage of arbitrary runtime-generated messages.
 
-- Excluded 0 supplied candidate keys without a matching production source literal.
-- Excluded 0 supplied keys already proposed in open Korean translation PRs.
-
-The Korean no-dead-entry test now accepts exact `t("…")` calls in the desktop audio warning source, because those messages have not yet been added to the Spanish catalog. The obsolete VA-API-only paragraph was not added. The Rust test was updated but not executed.
+The Korean no-dead-entry test accepts exact `t("…")` calls in the desktop audio source. The obsolete VA-API-only paragraph was not added. The updated Rust test has not been executed.
